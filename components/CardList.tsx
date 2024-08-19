@@ -13,9 +13,12 @@ type Props = {
 
 const CardList = ({ id, item }: Props) => {
   const router = useRouter();
-  console.log("id", id);
+
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => router.push(`/detail/${id}`)}
+    >
       <View style={styles.imageContainer}>
         <Image
           source={{

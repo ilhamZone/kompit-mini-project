@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { ActivityIndicator, FlatList, StyleSheet } from "react-native";
 
-import { PokemonTypesType, PokemonResultType } from "@/types/types";
+import { PokemonResultType } from "@/types/types";
 import CardList from "./CardList";
 import { findUlrId } from "@/utils/helpers";
 

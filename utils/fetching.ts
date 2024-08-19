@@ -1,6 +1,6 @@
 import api from "../api/api";
 import axios from "axios";
-import { PokemonListType } from "@/types/types";
+import { PokemonListType, DetailType } from "@/types/types";
 
 export const fetching = () => {
   const getPokemonList = async (url: string) => {
@@ -12,7 +12,7 @@ export const fetching = () => {
   };
 
   const getPokemonDetail = async (id: number | string) => {
-    const response: any = await api.getPokemonDetail({
+    const response: DetailType = await api.getPokemonDetail({
       params: { id },
     });
     return response;

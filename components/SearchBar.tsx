@@ -21,7 +21,7 @@ type Props = {
 
 const SearchBar = ({ onClear, text, onSubmit }: Props) => {
   const timeoutId = useRef<NodeJS.Timeout | null>(null);
-  const { control, handleSubmit, reset, watch } = useForm<FormData>();
+  const { control, reset } = useForm<FormData>();
 
   const handleReset = () => {
     reset();
@@ -44,7 +44,7 @@ const SearchBar = ({ onClear, text, onSubmit }: Props) => {
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              placeholder="Search Pokemon..."
+              placeholder="Search by name..."
               placeholderTextColor="#999"
               style={styles.input}
               onBlur={onBlur}

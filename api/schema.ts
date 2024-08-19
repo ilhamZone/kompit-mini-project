@@ -1,22 +1,40 @@
 import z from "zod";
 
-export const pokemonDetailSchema = z.object({
-    abilities: z.array(abilitySchema),
-    base_experience: z.number(),
-    forms: z.array(formSchema),
-    game_indices: z.array(gameIndexSchema),
-    height: z.number(),
-    held_items: z.array(z.any()),
-    id: z.number(),
-    is_default: z.boolean(),
-    location_area_encounters: z.string().url(),
-    moves: z.array(moveSchema),
+const abilitySchema = z.object({
+  ability: z.object({
     name: z.string(),
-    order: z.number(),
-    past_types: z.array(z.any()),
-    species: speciesSchema,
-    sprites: spriteSchema,
-    stats: z.array(statSchema),
-    types: z.array(typeSchema),
-    weight: z.
-  });
+    url: z.string(),
+  }),
+  is_hidden: z.boolean(),
+  slot: z.number(),
+});
+
+const spriteSchema = z.object({
+  back_default: z.string(),
+  back_shiny: z.string(),
+  front_default: z.string(),
+  front_shiny: z.string(),
+  other: z.object({
+    home: z.object({
+      front_default: z.string(),
+    }),
+  }),
+});
+
+export const pokemonDetailSchema = z.object({
+  abilities: z.array(abilitySchema),
+  name: z.string(),
+  sprites: spriteSchema,
+});
+
+export const pokemonListSchema = z.object({
+  count: z.number(),
+  next: z.string(),
+  previous: z.string(),
+  results: z.array(
+    z.object({
+      name: z.string(),
+      url: z.string(),
+    })
+  ),
+});

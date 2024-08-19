@@ -1,6 +1,6 @@
 import { makeApi, Zodios } from "@zodios/core";
 import customFetch from "../utils/customFetch";
-// import { pokemonDetailSchema } from "./schema";
+import { pokemonDetailSchema, pokemonListSchema } from "./schema";
 import { z } from "zod";
 
 const zodApi = makeApi([
@@ -14,7 +14,7 @@ const zodApi = makeApi([
     method: "get",
     path: "pokemon/:id",
     alias: "getPokemonDetail",
-    response: z.any(),
+    response: pokemonDetailSchema,
   },
 ]);
 
