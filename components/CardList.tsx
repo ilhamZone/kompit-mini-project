@@ -8,7 +8,7 @@ import CustomText from "./CustomText";
 
 type Props = {
   item: PokemonResultType;
-  id: string | number;
+  id?: string | number;
 };
 
 const CardList = ({ id, item }: Props) => {

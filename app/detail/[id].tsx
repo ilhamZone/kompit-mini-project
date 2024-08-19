@@ -4,9 +4,10 @@ import Header from "@/components/Header";
 import SectionDetail from "@/components/SectionDetail";
 import { fetching } from "@/utils/fetching";
 import { RPH, RPW } from "@/utils/helpers";
+import { storage } from "@/utils/storage";
 import { useQuery } from "@tanstack/react-query";
-import { useLocalSearchParams } from "expo-router";
-import { Fragment } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { Fragment, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -19,14 +20,46 @@ const Detail = () => {
   const { id } = useLocalSearchParams();
   const { getPokemonDetail } = fetching();
 
+  const checkFavorite = (id: number | string) => {
+    const favorites = JSON.parse(storage.getString("favorites") || "[]");
+    return favorites.some((item: any) => Number(item.id) === Number(id));
+  };
+
+  const [favorite, setFavorite] = useState(checkFavorite(id as string));
+
   const { data, isLoading } = useQuery({
-    queryKey: ["pokemonDetail", id],
+    queryKey: ["pokemonDetail"],
     queryFn: () => getPokemonDetail(id as string),
   });
 
+  const addToFavorite = () => {
+    const favorites: string | undefined =
+      storage.getString("favorites") || "[]";
+    const newFavorites = [...JSON.parse(favorites), { name: data?.name, id }];
+    storage.set("favorites", JSON.stringify(newFavorites));
+  };
+
+  const removeFavorite = () => {
+    const favorites: string | undefined =
+      storage.getString("favorites") || "[]";
+    const newFavorites = JSON.parse(favorites).filter(
+      (item: any) => item.id !== id
+    );
+    storage.set("favorites", JSON.stringify(newFavorites));
+  };
+
+  function onPressFavorite() {
+    if (favorite) {
+      removeFavorite();
+    } else {
+      addToFavorite();
+    }
+    setFavorite(!favorite);
+  }
+
   return (
     <Fragment>
-      <Header title="Pokemon Detail" />
+      <Header title="Pokemon Detail" onPress={() => router.push("/")} />
 
       {isLoading ? (
         <View style={styles.loading}>
@@ -42,7 +75,11 @@ const Detail = () => {
           />
           <View style={styles.line} />
           <View style={styles.content}>
-            <SectionDetail title={data?.name} />
+            <SectionDetail
+              title={data?.name}
+              favorite={favorite}
+              onPress={onPressFavorite}
+            />
             <CustomText style={{ marginTop: 20 }} type="bold" size={18}>
               Sprite Gallery
             </CustomText>

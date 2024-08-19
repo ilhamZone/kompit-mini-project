@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -7,6 +7,7 @@ import "react-native-reanimated";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StyleSheet } from "react-native";
 import colors from "@/constants/colors";
+import FavoriteIcon from "@/components/FavoriteIcon";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -40,6 +41,14 @@ export default function RootLayout() {
             contentStyle: styles.container,
             headerTitle: "Pokedex",
             headerTitleStyle: styles.title,
+            headerLeft: () => null,
+            headerRight: () => (
+              <FavoriteIcon
+                favorite={false}
+                onPress={() => router.push("/favorites")}
+                style={styles.favorite}
+              />
+            ),
           }}
         />
       </Stack>
@@ -57,5 +66,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  favorite: {
+    marginRight: 18,
   },
 });

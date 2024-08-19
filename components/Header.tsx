@@ -1,13 +1,15 @@
 import colors from "@/constants/colors";
+import { AntDesign } from "@expo/vector-icons";
 import { router, Stack } from "expo-router";
 import { memo } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 type Props = {
   title?: string;
+  onPress?: () => void;
 };
 
-const Header = ({ title = "Pokedex" }: Props) => {
+const Header = ({ title = "Pokedex", onPress }: Props) => {
   return (
     <Stack.Screen
       options={{
@@ -15,6 +17,14 @@ const Header = ({ title = "Pokedex" }: Props) => {
         contentStyle: styles.container,
         headerTitle: title,
         headerTitleStyle: styles.title,
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => (onPress ? onPress() : router.back())}
+            style={styles.backBtn}
+          >
+            <AntDesign name="arrowleft" size={24} color="black" />
+          </TouchableOpacity>
+        ),
       }}
     />
   );
@@ -30,5 +40,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  backBtn: {
+    marginLeft: 16,
   },
 });
