@@ -1,10 +1,6 @@
 import api from "../api/api";
 import axios from "axios";
-import {
-  PokemonListType,
-  PokemonResultType,
-  PokemonTypesType,
-} from "@/types/types";
+import { PokemonListType } from "@/types/types";
 
 export const fetching = () => {
   const getPokemonList = async (url: string) => {

@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import {
   View,
   TextInput,
@@ -20,13 +20,23 @@ type Props = {
 };
 
 const SearchBar = ({ onClear, text, onSubmit }: Props) => {
-  const { control, handleSubmit, getValues, reset } = useForm<FormData>();
+  const timeoutId = useRef<NodeJS.Timeout | null>(null);
+  const { control, handleSubmit, reset, watch } = useForm<FormData>();
 
   const handleReset = () => {
     reset();
     onClear();
   };
 
+  const handleChange = (text: string) => {
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
+    }
+
+    timeoutId.current = setTimeout(() => {
+      onSubmit(text);
+    }, 1000);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.wrapInput}>
@@ -38,7 +48,10 @@ const SearchBar = ({ onClear, text, onSubmit }: Props) => {
               placeholderTextColor="#999"
               style={styles.input}
               onBlur={onBlur}
-              onChangeText={onChange}
+              onChangeText={(text) => {
+                handleChange(text);
+                onChange(text);
+              }}
               value={value}
             />
           )}
@@ -52,14 +65,6 @@ const SearchBar = ({ onClear, text, onSubmit }: Props) => {
           </TouchableOpacity>
         )}
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleSubmit((data: FormData) =>
-          onSubmit(String(data.searchInput))
-        )}
-      >
-        <FontAwesome name="search" size={20} />
-      </TouchableOpacity>
     </View>
   );
 };

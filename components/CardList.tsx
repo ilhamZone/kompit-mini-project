@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 import React, { memo } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { PokemonResultType } from "@/types/types";
 import CustomText from "./CustomText";
@@ -24,7 +24,9 @@ const CardList = ({ id, item }: Props) => {
           style={styles.image}
         />
       </View>
-      <CustomText type="medium">{item.name}</CustomText>
+      <CustomText type="medium" style={{ textTransform: "capitalize" }}>
+        {item.name}
+      </CustomText>
     </TouchableOpacity>
   );
 };
@@ -40,6 +42,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "grey",
     flex: 0.5,
+    maxWidth: "48%",
   },
   imageContainer: {
     alignItems: "stretch",
